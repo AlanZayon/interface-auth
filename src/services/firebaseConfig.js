@@ -4,7 +4,7 @@ import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
 	apiKey: "AIzaSyA7pjqqd9M9jXIiepDb4pKgkLanhGjwSM4",
-	authDomain: "https://site-kong.netlify.app",
+	authDomain: "site-kong.netlify.app",
 	projectId: "site-kong",
 	storageBucket: "site-kong.appspot.com",
 	messagingSenderId: "291491939183",
