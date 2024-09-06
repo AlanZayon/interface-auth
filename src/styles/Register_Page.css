@@ -1,0 +1,41 @@
+
+  /* Estilo para a caixa do formulário */
+  .form-box {
+    padding: 2rem;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Estilo para o título do formulário */
+  .form-box h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-box input {
+    margin-top: 1.5rem;
+  }
+  
+  /* Estilo para o botão de registro */
+  .form-box .btn-success {
+    width: 100%;
+    margin-top: 1rem;
+  }
+  
+  /* Ajustes adicionais */
+  .form-box .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .custom-input-group-text {
+padding: 500px;
+  }
+
+  .floating {
+    background: black;
+    color: white;
+    padding: 1rem;
+  }
+  
+  

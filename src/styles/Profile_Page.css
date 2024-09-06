@@ -1,0 +1,62 @@
+/* ProfilePage.css */
+
+  .profile-card {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-picture {
+    width: 150px;
+    height: 150px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: block;
+  }
+  
+  .text-center h4 {
+    margin-top: 1rem;
+    font-weight: bold;
+  }
+  
+  .text-center p {
+    color: #888;
+    font-size: 0.9rem;
+  }
+  
+  .button-google {
+    background-color: #db4437;
+    border-color: #db4437;
+  }
+  
+  .button-facebook {
+    background-color: #3b5998;
+    border-color: #3b5998;
+  }
+  
+  .input-group-text {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .input-group-text .bi-eye {
+    font-size: 1.2rem;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  .btn {
+    margin-bottom: 1rem;
+  }
+  

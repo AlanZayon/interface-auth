@@ -1,0 +1,61 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Roboto", sans-serif;
+}
+.login-form input {
+  margin-bottom: 10px; /* ou qualquer valor de margem que você prefira */
+}
+/* Estilizando o formulário */
+.login-form {
+  max-width: 400px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.login-form a {
+  display: block; /* Colocando o link em uma linha separada */
+  text-align: right;
+  color: #666;
+}
+
+/* Estilizando os botões de login social */
+.login-form .btn {
+  width: 100%;
+  margin: 5px;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.password-icon {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.position-relative {
+  position: relative;
+}
+
+
+@media (max-width: 992px) {
+  .footer {
+    position: static;
+  }
+}
+
+
