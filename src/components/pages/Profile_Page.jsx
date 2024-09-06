@@ -59,8 +59,8 @@
         <Row className="profile-card p-3 rounded shadow" style={{ backgroundColor: '#fff', maxWidth: '400px' }}>
           <div className="text-center mb-3">
             <div className="profile-picture rounded-circle mb-3" style={{ width: '150px', height: '150px', backgroundColor: '#ccc' }}></div>
-            <h4>AlanZayon</h4>
-            <p>alanzayon72@gmail.com</p>
+            <h4>Usuario</h4>
+            <p>email@gmail.com</p>
           </div>
           <ChangePasswordForm onChangePassword={handleChangePassword} />
             <Row xs={4} md={4} lg={4} className="d-flex justify-content-center align-items-center ">
