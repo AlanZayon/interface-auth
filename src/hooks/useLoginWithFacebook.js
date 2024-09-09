@@ -13,9 +13,8 @@ const initializeFacebookSDK = () => {
     window.fbAsyncInit = function() {
         FB.init({
             appId      : '1105932533913687', // Substitua pelo seu Facebook App ID
-            cookie     : true,
             xfbml      : true,
-            version    : 'v12.0'
+            version    : 'v20.0'
         });
     };
 
@@ -41,13 +40,13 @@ const useLoginWithFacebook = () => {
     const mutation = useMutation({
         mutationFn: async () => {
             return new Promise((resolve, reject) => {
-                FB.login(async (response) => {
+                FB.login((response) => {
                     if (response.authResponse) {
                         const { accessToken } = response.authResponse;
                         try {
                             // Create a Firebase credential with the Facebook access token
                             const credential = FacebookAuthProvider.credential(accessToken);
-                            const result = await signInWithCredential(auth, credential);
+                            const result = signInWithCredential(auth, credential);
                             resolve(result);
                         } catch (error) {
                             console.error("Firebase credential error:", error);
