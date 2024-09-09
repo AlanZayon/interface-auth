@@ -50,9 +50,11 @@ const useLoginWithFacebook = () => {
                             const result = await signInWithCredential(auth, credential);
                             resolve(result);
                         } catch (error) {
+                            console.error("Firebase credential error:", error);
                             reject(error);
                         }
                     } else {
+                        console.error("Facebook login response error:", response);
                         reject(new Error("User cancelled login or failed to authenticate."));
                     }
                 }, { scope: 'email,public_profile' });
