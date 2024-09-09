@@ -3,28 +3,67 @@ import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { auth } from "../services/firebaseConfig";
 import {
-    signInWithRedirect,
     getRedirectResult,
-    FacebookAuthProvider
+    FacebookAuthProvider,
+    signInWithCredential
 } from "firebase/auth";
+
+// Função para inicializar o SDK do Facebook
+const initializeFacebookSDK = () => {
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '1105932533913687', // Substitua pelo seu Facebook App ID
+            cookie     : true,
+            xfbml      : true,
+            version    : 'v12.0'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+};
 
 const useLoginWithFacebook = () => {
     const navigate = useNavigate();
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-    // Mutation for initiating Facebook login via redirect
+    // Initialize Facebook SDK
+    useEffect(() => {
+        initializeFacebookSDK();
+    }, []);
+
+    // Mutation for initiating Facebook login
     const mutation = useMutation({
         mutationFn: async () => {
-            const provider = new FacebookAuthProvider();
-            await signInWithRedirect(auth, provider);
-            // No result will be returned here because this will redirect
+            return new Promise((resolve, reject) => {
+                FB.login(async (response) => {
+                    if (response.authResponse) {
+                        const { accessToken } = response.authResponse;
+                        try {
+                            // Create a Firebase credential with the Facebook access token
+                            const credential = FacebookAuthProvider.credential(accessToken);
+                            const result = await signInWithCredential(auth, credential);
+                            resolve(result);
+                        } catch (error) {
+                            reject(error);
+                        }
+                    } else {
+                        reject(new Error("User cancelled login or failed to authenticate."));
+                    }
+                }, { scope: 'email,public_profile' });
+            });
         },
         onError: (error) => {
             console.error("Error during Facebook login:", error);
         },
     });
 
-    // Handle the result of Facebook login after redirect
+    // Handle the result of Facebook login
     useEffect(() => {
         const checkRedirectResult = async () => {
             try {
@@ -55,6 +94,7 @@ const useLoginWithFacebook = () => {
     return mutation;
 };
 
+// Handle registration for new users
 const redirectToRegistration = (user, credential, navigate) => {
     const nome = user.displayName;
     const email = user.email;
@@ -64,6 +104,7 @@ const redirectToRegistration = (user, credential, navigate) => {
     navigate(`/register?name=${nomeEncoded}&email=${emailEncoded}`, { state: { show: true } });
 };
 
+// Handle existing users
 const handleExistingUser = async (user, navigate, API_BASE_URL) => {
     const userId = await user.getIdToken(true);
     if (userId) {
@@ -78,7 +119,7 @@ const handleExistingUser = async (user, navigate, API_BASE_URL) => {
         if (data.userExists && data.verifyStatus === true) {
             navigate("/profile");
         } else {
-            navigate();
+            navigate("/"); // Redireciona para uma rota apropriada, caso o usuário não esteja verificado
         }
     }
 };
