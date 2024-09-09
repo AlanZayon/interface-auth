@@ -84,26 +84,36 @@ const useLoginWithFacebook = () => {
         },
         onError: (error) => {
             console.error("Error during Facebook login:", error);
-
-            let credential = null;
-
-            if (error.code === "auth/account-exists-with-different-credential") {
-                try {
-                    // Extract credential from the error using providerId
-                    credential = FacebookAuthProvider.credentialFromError(error);
-                } catch (ex) {
-                    console.error("Failed to extract credential from error", ex);
-                }
-
-                if (credential) {
-                    sessionStorage.setItem("pendingCred", JSON.stringify(credential));
-                }
-
-                sessionStorage.setItem("emailForSignIn", error.customData.email);
-                navigate("/loginProvider");
-            }
         },
     });
+
+    // // Handle the result of Facebook login
+    // useEffect(() => {
+    //     const checkRedirectResult = async () => {
+    //         try {
+    //             const result = await getRedirectResult(auth);
+    //             if (result) {
+    //                 const user = result.user;
+    //                 console.log("User after redirect:", user); // Log the user to the console
+
+    //                 const credential = FacebookAuthProvider.credentialFromResult(result);
+    //                 const additionalUserInfo = result._tokenResponse.isNewUser;
+
+    //                 if (additionalUserInfo) {
+    //                     // If new user, handle registration
+    //                     redirectToRegistration(user, credential, navigate);
+    //                 } else {
+    //                     // Existing user
+    //                     await handleExistingUser(user, navigate, API_BASE_URL);
+    //                 }
+    //             }
+    //         } catch (error) {
+    //             console.error("Error after Facebook login redirect:", error);
+    //         }
+    //     };
+
+    //     checkRedirectResult();
+    // }, [navigate, API_BASE_URL]);
 
     return mutation;
 };
