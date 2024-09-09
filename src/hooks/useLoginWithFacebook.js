@@ -10,17 +10,17 @@ import {
 
 // Função para inicializar o SDK do Facebook
 const initializeFacebookSDK = () => {
-    window.fbAsyncInit = function() {
+    window.fbAsyncInit = function () {
         FB.init({
-            appId      : '1105932533913687', // Substitua pelo seu Facebook App ID
-            xfbml      : true,
-            version    : 'v20.0'
+            appId: '1105932533913687', // Substitua pelo seu Facebook App ID
+            xfbml: true,
+            version: 'v20.0'
         });
     };
 
-    (function(d, s, id){
+    (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
+        if (d.getElementById(id)) { return; }
         js = d.createElement(s); js.id = id;
         js.src = "https://connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
@@ -46,8 +46,21 @@ const useLoginWithFacebook = () => {
                         try {
                             // Create a Firebase credential with the Facebook access token
                             const credential = FacebookAuthProvider.credential(accessToken);
-                            const result = signInWithCredential(auth, credential);
-                            resolve(result);
+                            // Resolver a promise do Firebase Auth manualmente
+                            signInWithCredential(auth, credential)
+                                .then((result) => {
+                                    console.log("Entrou: ", result);
+
+
+                                        // Redirecionar para a página de perfil se for um usuário existente
+                                        navigate("/profile");
+                                    
+                                    resolve(result);
+                                })
+                                .catch((error) => {
+                                    console.error("Firebase credential error:", error);
+                                    reject(error);
+                                });
                         } catch (error) {
                             console.error("Firebase credential error:", error);
                             reject(error);
