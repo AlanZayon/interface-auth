@@ -1,65 +1,58 @@
 import { useMutation } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { auth } from "../services/firebaseConfig";
 import {
-    signInWithPopup,
+    signInWithRedirect,
+    getRedirectResult,
     FacebookAuthProvider
 } from "firebase/auth";
 
 const useLoginWithFacebook = () => {
-
     const navigate = useNavigate();
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-    return useMutation({
+    // Mutation for initiating Facebook login via redirect
+    const mutation = useMutation({
         mutationFn: async () => {
             const provider = new FacebookAuthProvider();
-            const result = await signInWithPopup(auth, provider);
-
-            if (!result) {
-                throw new Error("No result returned from signInWithPopup.");
-            }
-
-            const user = result.user;
-            const credential = FacebookAuthProvider.credentialFromResult(result);
-            const additionalUserInfo = result._tokenResponse.isNewUser;
-
-            if (additionalUserInfo) {
-                // If new user, handle registration
-                return { user, credential, isNewUser: true };
-            } else {
-                // Existing user
-                return { user, credential, isNewUser: false };
-            }
-        },
-        onSuccess: async ({ user, credential, isNewUser }) => {
-            if (isNewUser) {
-                redirectToRegistration(user, credential, navigate);
-            } else {
-                await handleExistingUser(user, navigate, API_BASE_URL);
-            }
+            await signInWithRedirect(auth, provider);
+            // No result will be returned here because this will redirect
         },
         onError: (error) => {
             console.error("Error during Facebook login:", error);
-            let credential = null;
-
-            if (error.code === "auth/account-exists-with-different-credential") {
-                try {
-                    // Extract credential from the error using providerId
-                    credential = FacebookAuthProvider.credentialFromError(error);
-                } catch (ex) {
-                    console.error("Failed to extract credential from error", ex);
-                }
-
-                if (credential) {
-                    sessionStorage.setItem("pendingCred", JSON.stringify(credential));
-                }
-
-                sessionStorage.setItem("emailForSignIn", error.customData.email);
-                navigate("/loginProvider");
-            }
         },
     });
+
+    // Handle the result of Facebook login after redirect
+    useEffect(() => {
+        const checkRedirectResult = async () => {
+            try {
+                const result = await getRedirectResult(auth);
+                if (result) {
+                    const user = result.user;
+                    console.log("User after redirect:", user); // Log the user to the console
+
+                    const credential = FacebookAuthProvider.credentialFromResult(result);
+                    const additionalUserInfo = result._tokenResponse.isNewUser;
+
+                    if (additionalUserInfo) {
+                        // If new user, handle registration
+                        redirectToRegistration(user, credential, navigate);
+                    } else {
+                        // Existing user
+                        await handleExistingUser(user, navigate, API_BASE_URL);
+                    }
+                }
+            } catch (error) {
+                console.error("Error after Facebook login redirect:", error);
+            }
+        };
+
+        checkRedirectResult();
+    }, [navigate, API_BASE_URL]);
+
+    return mutation;
 };
 
 const redirectToRegistration = (user, credential, navigate) => {
