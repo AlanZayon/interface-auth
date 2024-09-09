@@ -48,11 +48,9 @@ const useLoginWithFacebook = () => {
                             // Resolver a promise do Firebase Auth manualmente
                             signInWithCredential(auth, credential)
                                 .then((result) => {
-                                    console.log("Entrou: ", result);
 
                                     if (result) {
                                         const user = result.user;
-                                        console.log("User after redirect:", user); // Log the user to the console
 
                                         const credential = FacebookAuthProvider.credentialFromResult(result);
                                         const additionalUserInfo = result._tokenResponse.isNewUser;
