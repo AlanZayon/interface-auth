@@ -8,8 +8,8 @@ import Profile from './components/pages/Profile_Page';
 import ForgetPassword from './components/pages/ForgetPassword_Page';
 import LoginProvider from "./components/pages/LoginPovider_Page";
 import ConfirmEmail from "./components/pages/Temp";
-import LoadingScreen from "./components/layout/LoadingScreen";
-import { LoadingProvider, useLoading } from './components/common/LoadingContext';
+import LoadingScreen from "./components/common/LoadingScreen";
+import { LoadingProvider, useLoading } from './components/context/LoadingContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -34,7 +34,12 @@ function AppRoutes() {
 function App() {
   const { loading } = useLoading();
 
-  return loading ? <LoadingScreen /> : <AppRoutes />;
+  return (
+    <>
+      <LoadingScreen show={loading} />
+      <AppRoutes />
+    </>
+  );
 }
 
 // Função para envolver o App com os provedores

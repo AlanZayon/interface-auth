@@ -7,9 +7,8 @@ const ErrorMessage = ({ error }) => {
   return error ? <div className="text-danger">{error}</div> : null;
 };
 
-// Adicionando validação de props
 ErrorMessage.propTypes = {
-    error: PropTypes.string, // Define que `error` deve ser uma string
+    error: PropTypes.string, 
   };
 
 export default ErrorMessage;

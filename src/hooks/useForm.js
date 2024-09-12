@@ -71,18 +71,18 @@ const useForm = (handleRegister) => {
     }
   };
 
-    // Atualiza formData com os valores dos parâmetros da URL
-    useEffect(() => {
-      const nameParam = getParameterByName("name");
-      const emailParam = getParameterByName("email");
-  
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        username: nameParam || "",
-        email: emailParam || "",
-        confirmEmail: emailParam || "",
-      }));
-    }, []);
+  // Atualiza formData com os valores dos parâmetros da URL
+  useEffect(() => {
+    const nameParam = getParameterByName("name");
+    const emailParam = getParameterByName("email");
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      username: nameParam || "",
+      email: emailParam || "",
+      confirmEmail: emailParam || "",
+    }));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -107,8 +107,8 @@ const useForm = (handleRegister) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const validationErrors = validateForm(formData, strength);
-      await handleRegister(formData, setErrors, validationErrors); // Chama handleRegister
-    
+    await handleRegister(formData, setErrors, validationErrors);
+
 
   };
 

@@ -2,11 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import { signInWithCustomToken, GoogleAuthProvider, FacebookAuthProvider, linkWithCredential } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { auth } from "../services/firebaseConfig";
-import { useLoading } from '../components/common/LoadingContext'; 
+import { useLoading } from '../components/context/LoadingContext'; 
 
 export const useLogin = (setErrorMessage) => {
     const navigate = useNavigate();
-    const { setLoading } = useLoading();  // Use o setLoading do contexto
+    const { setLoading } = useLoading();  
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     const { mutate: loginUser } = useMutation({
@@ -32,17 +32,18 @@ export const useLogin = (setErrorMessage) => {
             await handleAdditionalUserInfo(userCredential);
             if (data.verifyStatus === true) {
                 localStorage.setItem("token", token);
-                setLoading(false);  
                 navigate("/profile");
             } else {
-                setLoading(false);  
+                
                 navigate("/confirmEmail");
             }
         },
         onError: () => {
-
             setErrorMessage("email or password incorrect");
         },
+        onSettled: () => {
+            setLoading(false); 
+        }
     });
 
     const handleAdditionalUserInfo = async (userCredential) => {

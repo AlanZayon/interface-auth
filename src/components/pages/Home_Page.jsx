@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Card, Col, Row, Container } from 'react-bootstrap';
 import '../../styles/Home_Page.css';
