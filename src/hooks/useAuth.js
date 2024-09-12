@@ -52,7 +52,7 @@ export const useAuth = () => {
       } else {
         const data = await response.json();
         if (data.verified === false) {
-          handleLogout(authType);
+          navigate("/confirmEmail")
         } else {
           navigate("/profile")
         }

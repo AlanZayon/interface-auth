@@ -131,7 +131,7 @@ const handleExistingUser = async (user, navigate, API_BASE_URL) => {
         if (data.userExists && data.verifyStatus === true) {
             navigate("/profile");
         } else {
-            navigate("/"); // Redireciona para uma rota apropriada, caso o usuário não esteja verificado
+            navigate("/confirmEmail"); // Redireciona para uma rota apropriada, caso o usuário não esteja verificado
         }
     }
 };

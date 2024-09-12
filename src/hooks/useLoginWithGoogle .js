@@ -115,7 +115,7 @@ const handleExistingUser = async (user, navigate, API_BASE_URL) => {
         if (data.userExists && data.verifyStatus === true) {
             navigate("/profile");
         } else {
-            navigate();
+            navigate("/confirmEmail");
         }
     }
 };
