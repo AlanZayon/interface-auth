@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMainFunction } from './useRealizeUid'
 import { auth } from "../services/firebaseConfig";
 import { useSendEmail } from "./useSendEmail";
+import { useLoading } from '../components/context/LoadingContext'; 
 import {
     createUserWithEmailAndPassword,
     signInWithCustomToken,
@@ -21,6 +22,7 @@ export function useRegister() {
     const { sendEmail } = useSendEmail();
     const { userUid } = useMainFunction();
     const navigate = useNavigate();
+    const { setLoading } = useLoading();  
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     // Função para registrar o usuário no backend
@@ -47,6 +49,7 @@ export function useRegister() {
     const registerMutation = useMutation({ mutationFn: registerUser },);
 
     const handleRegister = async (formData, setValidationErrors, validationErrors) => {
+        setLoading(true); 
 
         let externalErrors = { ...validationErrors };
 
@@ -117,6 +120,7 @@ export function useRegister() {
                 };
             }
         } finally {
+            setLoading(false); 
             setValidationErrors(externalErrors);
         }
     };

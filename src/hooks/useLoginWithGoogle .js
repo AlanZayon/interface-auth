@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from 'react-router-dom';
+import { useLoading } from '../components/context/LoadingContext'; 
 import { auth } from "../services/firebaseConfig";
 import {
     signInWithPopup,
@@ -11,10 +12,12 @@ import {
 const useLoginWithGoogle = () => {
 
     const navigate = useNavigate();
+    const { setLoading } = useLoading();  
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     return useMutation({
         mutationFn: async () => {
+            setLoading(true); 
             const provider = new GoogleAuthProvider();
             const result = await signInWithPopup(auth, provider);
 
@@ -89,6 +92,9 @@ const useLoginWithGoogle = () => {
                 // navigate("/loginProvider");
             }
         },
+        onSettled: () => {
+            setLoading(false); 
+        }
     });
 };
 

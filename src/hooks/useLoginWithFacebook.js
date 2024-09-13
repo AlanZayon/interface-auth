@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useLoading } from '../components/context/LoadingContext'; 
 import { auth } from "../services/firebaseConfig";
 import {
     FacebookAuthProvider,
@@ -28,6 +29,7 @@ const initializeFacebookSDK = () => {
 
 const useLoginWithFacebook = () => {
     const navigate = useNavigate();
+    const { setLoading } = useLoading();  
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     // Initialize Facebook SDK
@@ -38,6 +40,7 @@ const useLoginWithFacebook = () => {
     // Mutation for initiating Facebook login
     const mutation = useMutation({
         mutationFn: async () => {
+            setLoading(true); 
             return new Promise((resolve, reject) => {
                 FB.login((response) => {
                     if (response.authResponse) {
@@ -101,6 +104,9 @@ const useLoginWithFacebook = () => {
                 navigate("/loginProvider");
             }
         },
+        onSettled: () => {
+            setLoading(false); 
+        }
     });
 
     return mutation;
