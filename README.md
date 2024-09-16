@@ -45,7 +45,7 @@ Para rodar o projeto localmente, siga os passos abaixo:
    ```bash
    npm install
    ```
-3.3. **Crie um arquivo .env com as variáveis de ambiente, como as chaves de API do Firebase. Exemplo de conteúdo do .env**:
+3.3. **Crie um arquivo .env com as variáveis de ambiente**:
    ```env
    VITE_API_BASE_URL=your_auth_domain
    ```
