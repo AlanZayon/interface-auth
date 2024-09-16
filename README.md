@@ -71,7 +71,7 @@ O projeto estará disponível em http://localhost:5173
 ...
 
 ## 5. Comunicação com a API
-Todas as requisições ao backend seguem um padrão de autenticação com tokens JWT, onde o token é armazenado no localStorage ou sessionStorage e enviado em cada requisição com o cabeçalho Authorization: Bearer <token>.
+As requisições ao backend seguem um padrão de autenticação com tokens JWT, onde o token é armazenado no localStorage ou sessionStorage e enviado ou recebido em cada requisição com o cabeçalho Authorization: Bearer <token>.
 
 ### Exemplo de chamada com Fetch:
 
