@@ -20,6 +20,12 @@
 ## 1. Introdução
 Este frontend foi desenvolvido para um sistema de autenticação que permite login, cadastro de usuários e login social usando Google e Facebook. Ele se comunica com uma API REST para autenticar e registrar usuários, além de validar credenciais.
 
+### URL do Site
+
+A aplicação está disponível no seguinte endereço:
+
+https://site-kong.netlify.app/
+
 ## 2. Tecnologias Utilizadas
 - **React**
 - **Firebase Authentication**
