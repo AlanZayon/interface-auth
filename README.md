@@ -24,7 +24,6 @@ Este frontend foi desenvolvido para um sistema de autenticação que permite log
 - **React**
 - **Firebase Authentication**
 - **TanStack Query**
-- **Axios**
 - **React Router**
 - **React Bootstrap**
 
