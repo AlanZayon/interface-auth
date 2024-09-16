@@ -2,18 +2,18 @@
 
 ## Sumário
 
-1. [Introdução](#introdução)
-2. [Tecnologias Utilizadas](#tecnologias-utilizadas)
-3. [Configuração](#configuração)
-4. [Funcionalidades](#funcionalidades)
+1. [Introdução](#1-introdução)
+2. [Tecnologias Utilizadas](#2-tecnologias-utilizadas)
+3. [Configuração](#3-configuração)
+4. [Funcionalidades](#4-funcionalidades)
    - [Login](#login)
    - [Cadastro](#cadastro)
    - [Login com Google](#login-com-google)
    - [Login com Facebook](#login-com-facebook)
-5. [Comunicação com a API](#comunicação-com-a-api)
-6. [Tratamento de Erros](#tratamento-de-erros)
-7. [Fluxo de Usuário](#fluxo-de-usuário)
-8. [Notas Finais](#notas-finais)
+5. [Comunicação com a API](#5-comunicação-com-a-api)
+6. [Tratamento de Erros](#6-tratamento-de-erros)
+7. [Fluxo de Usuário](#7-fluxo-de-usuário)
+8. [Notas Finais](#8-notas-finais)
 
 ---
 
