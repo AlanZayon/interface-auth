@@ -71,7 +71,7 @@ O projeto estará disponível em http://localhost:5173
 ...
 
 ## 5. Comunicação com a API
-As requisições ao backend seguem um padrão de autenticação com tokens JWT, onde o token é armazenado no localStorage ou sessionStorage e enviado ou recebido em cada requisição com o cabeçalho Authorization: Bearer <token>.
+As requisições ao backend seguem um padrão de autenticação com tokens JWT ou Firebase tokens, onde o token é armazenado no localStorage ou sessionStorage e enviado ou recebido em cada requisição com o cabeçalho Authorization: Bearer <token>.
 
 ### Exemplo de chamada com Fetch:
 
@@ -83,6 +83,8 @@ const response = await fetch(`${API_BASE_URL}/user/login`, {
                 },
                 body: JSON.stringify({ email, password }),
             });
+
+const token = await response.headers.get("Authorization-token").split(" ")[1];
 ```
 
 ## 6. Tratamento de Erros
