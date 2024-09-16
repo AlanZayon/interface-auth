@@ -87,8 +87,11 @@ const response = await fetch(`${API_BASE_URL}/user/login`, {
 const token = await response.headers.get("Authorization-token").split(" ")[1];
 ```
 
-## 6. Tratamento de Erros
-...
+## 6. Tratamento de Erros.
+### Erros de validação login: e-mail ou senha inválidos.
+![erro de validação login](https://i.imgur.com/nLROfyP.gif)
+### Erros de validação: cadastro:username at least 5 characters, Emails do not match, Password is too weak, You must be at least 18 years old.
+![erro de validação cadastro](https://i.imgur.com/3eJcbsE.gif)
 
 ## 7. Fluxo de Usuário
 - **Cadastro**: o usuário se registra inserindo nome, email, senha e data de nascimento. Após a confirmação, o sistema redireciona para a página de confirmação de email.
