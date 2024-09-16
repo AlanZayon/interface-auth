@@ -37,19 +37,19 @@ https://site-kong.netlify.app/
 
 Para rodar o projeto localmente, siga os passos abaixo:
 
-1. **Clone o repositório**:
+3.1. **Clone o repositório**:
    ```bash
    git clone https://github.com/AlanZayon/interface-auth.git
    ```
-1. **Instale as dependências**:
+3.2. **Instale as dependências**:
    ```bash
    npm install
    ```
-1. **Crie um arquivo .env com as variáveis de ambiente, como as chaves de API do Firebase. Exemplo de conteúdo do .env**:
+3.3. **Crie um arquivo .env com as variáveis de ambiente, como as chaves de API do Firebase. Exemplo de conteúdo do .env**:
    ```env
    VITE_API_BASE_URL=your_auth_domain
    ```
-1. **Execute o projeto**:
+3.4. **Execute o projeto**:
    ```bash
    npm run dev
    ```
@@ -71,14 +71,28 @@ O projeto estará disponível em http://localhost:5173
 ...
 
 ## 5. Comunicação com a API
-...
+Todas as requisições ao backend seguem um padrão de autenticação com tokens JWT, onde o token é armazenado no localStorage ou sessionStorage e enviado em cada requisição com o cabeçalho Authorization: Bearer <token>.
+
+### Exemplo de chamada com Fetch:
+
+```js
+const response = await fetch(`${API_BASE_URL}/user/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json;charset=UTF-8",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+```
 
 ## 6. Tratamento de Erros
 ...
 
 ## 7. Fluxo de Usuário
-...
-
+- **Cadastro**: o usuário se registra inserindo nome, email, senha e data de nascimento. Após a confirmação, o sistema redireciona para a página de confirmação de email.
+- **Login**: o usuário faz login com email/senha ou através de Google/Facebook. O token JWT ou o Firebase Token é salvo e utilizado em todas as requisições futuras para validar a sessão.
+- **Login Social**: o Firebase autentica o usuário via Google/Facebook e retorna um token que é enviado ao backend para associar ou criar a conta.
+- **Persistência de Sessão**: o token é armazenado no localStorage/sessionStorage para manter o usuário autenticado entre sessões(futuramente será alterado para o uso de cookies).
 ## 8. Notas Finais
-...
+Este frontend foi projetado para ser escalável e modular, facilitando a manutenção e possíveis expansões de funcionalidades como redefinição de senha, autenticação de dois fatores, etc.
 
