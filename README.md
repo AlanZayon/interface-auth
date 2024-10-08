@@ -30,7 +30,7 @@ https://site-kong.netlify.app/
 
 A documentação está disponível no seguinte endereço:
 
-[https://site-kong.netlify.app/](https://github.com/AlanZayon/api-auth)
+https://github.com/AlanZayon/api-auth
 
 ## 2. Tecnologias Utilizadas
 - **React**
