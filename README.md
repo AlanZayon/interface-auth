@@ -26,6 +26,12 @@ A aplicação está disponível no seguinte endereço:
 
 https://site-kong.netlify.app/
 
+### Documentação da API
+
+A documentação está disponível no seguinte endereço:
+
+https://github.com/AlanZayon/api-auth
+
 ## 2. Tecnologias Utilizadas
 - **React**
 - **Firebase Authentication**
@@ -59,16 +65,16 @@ O projeto estará disponível em http://localhost:5173
 ## 4. Funcionalidades
 
 ### 4.1 Login
-...
+![LOGIN](https://i.imgur.com/lCKa79t.gif)
 
 ### 4.2 Cadastro
-...
+![CADASTRO](https://i.imgur.com/hvZjU4Z.gif)
 
 ### 4.3 Login com Google
-...
+![LOGIN GOOGLE](https://i.imgur.com/J3bXMOU.gif)
 
 ### 4.4 Login com Facebook
-...
+![LOGIN FACEBOOK](https://i.imgur.com/QnuJpZj.gif)
 
 ## 5. Comunicação com a API
 As requisições ao backend seguem um padrão de autenticação com tokens JWT ou Firebase tokens, onde o token é armazenado no localStorage ou sessionStorage e enviado ou recebido em cada requisição com o cabeçalho Authorization: Bearer <token>.
@@ -99,5 +105,5 @@ const token = await response.headers.get("Authorization-token").split(" ")[1];
 - **Login Social**: o Firebase autentica o usuário via Google/Facebook e retorna um token que é enviado ao backend para associar ou criar a conta.
 - **Persistência de Sessão**: o token é armazenado no localStorage/sessionStorage para manter o usuário autenticado entre sessões(futuramente será alterado para o uso de cookies).
 ## 8. Notas Finais
-Este frontend foi projetado para ser escalável e modular, facilitando a manutenção e possíveis expansões de funcionalidades como redefinição de senha, autenticação de dois fatores, etc.
+Este frontend foi projetado para ser escalável e modular, facilitando a manutenção e possíveis expansões de funcionalidades como redefinição de senha, autenticação de dois fatores, etc. O projeto ainda está em construção e precisa ainda de muitas melhorias e correções.
 
