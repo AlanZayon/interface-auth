@@ -52,8 +52,6 @@ export function useRegister() {
 
         let externalErrors = { ...validationErrors };
         let isNavigating = false;
-        console.log(isNavigating);
-
 
         try {
             let data;
@@ -122,7 +120,6 @@ export function useRegister() {
                 };
             }
         } finally {
-            console.log(isNavigating)
             if (!isNavigating) {
                 setLoading(false);
             }
