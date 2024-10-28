@@ -99,7 +99,6 @@ export function useRegister() {
                     const credentials = JSON.parse(sessionStorage.getItem('credential') || 'null');
                     isNavigating = true;
                     handleProviderLinking(user, data, credentials);
-                    console.log(isNavigating)
                 }
             });
         } catch (error) {
@@ -120,6 +119,7 @@ export function useRegister() {
                 };
             }
         } finally {
+            console.log(isNavigating)
             if (!isNavigating) {
                 setLoading(false);
             }
