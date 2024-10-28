@@ -119,7 +119,7 @@ export function useRegister() {
                 };
             }
         } finally {
-            console.log(isNavigating)
+            console.log(isNavigating);
             if (!isNavigating) {
                 setLoading(false);
             }
