@@ -51,7 +51,6 @@ export function useRegister() {
         setLoading(true);
 
         let externalErrors = { ...validationErrors };
-        let isNavigating = false;
 
         try {
             let data;
@@ -74,6 +73,8 @@ export function useRegister() {
                         ...externalErrors,
                         ...handleBackendErrors(data.errors)
                     };
+                    setLoading(false);
+
                 }
 
             } else {
@@ -85,6 +86,8 @@ export function useRegister() {
                         ...externalErrors,
                         ...handleBackendErrors(data.errors)
                     };
+                    setLoading(false);
+
                 }
 
             }
@@ -97,7 +100,6 @@ export function useRegister() {
                 if (user) {
 
                     const credentials = JSON.parse(sessionStorage.getItem('credential') || 'null');
-                    isNavigating = true;
                     handleProviderLinking(user, data, credentials);
                 }
             });
@@ -109,6 +111,8 @@ export function useRegister() {
                 ...externalErrors,
                 ...handleFirebaseErrors(error)
             };
+            setLoading(false);
+
 
             const data = await registerMutation.mutateAsync({ ...formData });
 
@@ -117,12 +121,10 @@ export function useRegister() {
                     ...externalErrors,
                     ...handleBackendErrors(data.errors)
                 };
+                setLoading(false);
+
             }
         } finally {
-            console.log(isNavigating);
-            if (!isNavigating) {
-                setLoading(false);
-            }
             setValidationErrors(externalErrors);
         }
     };
