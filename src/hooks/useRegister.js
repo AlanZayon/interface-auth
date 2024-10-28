@@ -120,9 +120,6 @@ export function useRegister() {
                 };
             }
         } finally {
-            // if (!isNavigating) {
-            //     setLoading(false);
-            // }
             setValidationErrors(externalErrors);
         }
     };
@@ -145,6 +142,7 @@ export function useRegister() {
                 Object.assign(errors, matchedError[1]);
             }
         });
+        setLoading(false);
 
         return errors;
     };
@@ -154,6 +152,8 @@ export function useRegister() {
         if (error.code === 'auth/email-already-in-use') {
             errors.email = "Email already in use";
         }
+        setLoading(false);
+
         return errors;
     };
 
