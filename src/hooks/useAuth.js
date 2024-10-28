@@ -37,6 +37,7 @@ export const useAuth = () => {
 
       if ((new Date() - lastSignInTimeUTC) > (24 * 60 * 60 * 1000)) {
         await signOut(auth);
+        setLoading(false);
       } else {
         verificationTokenToPersistence(fireUserId, "Firebase");
       }
