@@ -52,6 +52,7 @@ export function useRegister() {
         setLoading(true);
 
         let externalErrors = { ...validationErrors };
+        let isNavigating = false;
 
 
         try {
@@ -98,7 +99,7 @@ export function useRegister() {
                 if (user) {
 
                     const credentials = JSON.parse(sessionStorage.getItem('credential') || 'null');
-
+                    isNavigating = true;
                     handleProviderLinking(user, data, credentials);
                 }
             });
@@ -120,7 +121,9 @@ export function useRegister() {
                 };
             }
         } finally {
-            setLoading(false);
+            if (!isNavigating) {
+                setLoading(false);
+            }
             setValidationErrors(externalErrors);
         }
     };
@@ -153,17 +156,6 @@ export function useRegister() {
             errors.email = "Email already in use";
         }
         return errors;
-    };
-
-    // Helper para aguardar a navegação
-    const waitForNavigation = (navigate, path) => {
-        return new Promise((resolve) => {
-            navigate(path);
-            const unsubscribe = onAuthStateChanged(auth, (user) => {
-                if (!user) resolve(); // Resolve a promessa se o usuário não estiver autenticado após o signOut
-                unsubscribe();
-            });
-        });
     };
 
     const handleProviderLinking = async (user, data, cred = null) => {
@@ -209,9 +201,9 @@ export function useRegister() {
 
         await signOut(auth);
 
-        await waitForNavigation(navigate, '/confirmEmail');
+        await navigate('/confirmEmail');
 
-        // setLoading(false);
+        setLoading(false);
 
     };
 
