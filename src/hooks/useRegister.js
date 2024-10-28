@@ -1,4 +1,3 @@
-// src/hooks/useRegister.js
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from 'react-router-dom';
 import { useMainFunction } from './useRealizeUid'
@@ -121,9 +120,9 @@ export function useRegister() {
                 };
             }
         } finally {
-            if (!isNavigating) {
-                setLoading(false);
-            }
+            // if (!isNavigating) {
+            //     setLoading(false);
+            // }
             setValidationErrors(externalErrors);
         }
     };
