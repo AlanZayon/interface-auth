@@ -198,7 +198,7 @@ export function useRegister() {
 
         await signOut(auth);
 
-        navigate('/confirmEmail');
+        await navigate('/confirmEmail');
 
         setLoading(false); 
 
