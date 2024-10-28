@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMainFunction } from './useRealizeUid'
 import { auth } from "../services/firebaseConfig";
 import { useSendEmail } from "./useSendEmail";
-import { useLoading } from '../components/context/LoadingContext'; 
+import { useLoading } from '../components/context/LoadingContext';
 import {
     createUserWithEmailAndPassword,
     signInWithCustomToken,
@@ -22,7 +22,7 @@ export function useRegister() {
     const { sendEmail } = useSendEmail();
     const { userUid } = useMainFunction();
     const navigate = useNavigate();
-    const { setLoading } = useLoading();  
+    const { setLoading } = useLoading();
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     // Função para registrar o usuário no backend
@@ -49,7 +49,7 @@ export function useRegister() {
     const registerMutation = useMutation({ mutationFn: registerUser },);
 
     const handleRegister = async (formData, setValidationErrors, validationErrors) => {
-        setLoading(true); 
+        setLoading(true);
 
         let externalErrors = { ...validationErrors };
 
@@ -120,7 +120,7 @@ export function useRegister() {
                 };
             }
         } finally {
-            setLoading(false); 
+            setLoading(false);
             setValidationErrors(externalErrors);
         }
     };
@@ -153,6 +153,17 @@ export function useRegister() {
             errors.email = "Email already in use";
         }
         return errors;
+    };
+
+    // Helper para aguardar a navegação
+    const waitForNavigation = (navigate, path) => {
+        return new Promise((resolve) => {
+            navigate(path);
+            const unsubscribe = onAuthStateChanged(auth, (user) => {
+                if (!user) resolve(); // Resolve a promessa se o usuário não estiver autenticado após o signOut
+                unsubscribe();
+            });
+        });
     };
 
     const handleProviderLinking = async (user, data, cred = null) => {
@@ -198,9 +209,9 @@ export function useRegister() {
 
         await signOut(auth);
 
-        await navigate('/confirmEmail');
+        await waitForNavigation(navigate, '/confirmEmail');
 
-        setLoading(false); 
+        setLoading(false);
 
     };
 
