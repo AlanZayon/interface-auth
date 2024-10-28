@@ -200,6 +200,8 @@ export function useRegister() {
 
         navigate('/confirmEmail');
 
+        setLoading(false); 
+
     };
 
     return { handleRegister };
