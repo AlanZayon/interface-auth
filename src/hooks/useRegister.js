@@ -52,6 +52,7 @@ export function useRegister() {
 
         let externalErrors = { ...validationErrors };
         let isNavigating = false;
+        console.log(isNavigating);
 
 
         try {
@@ -100,6 +101,7 @@ export function useRegister() {
                     const credentials = JSON.parse(sessionStorage.getItem('credential') || 'null');
                     isNavigating = true;
                     handleProviderLinking(user, data, credentials);
+                    console.log(isNavigating)
                 }
             });
         } catch (error) {
@@ -120,6 +122,10 @@ export function useRegister() {
                 };
             }
         } finally {
+            console.log(isNavigating)
+            if (!isNavigating) {
+                setLoading(false);
+            }
             setValidationErrors(externalErrors);
         }
     };
@@ -142,7 +148,6 @@ export function useRegister() {
                 Object.assign(errors, matchedError[1]);
             }
         });
-        setLoading(false);
 
         return errors;
     };
@@ -152,8 +157,6 @@ export function useRegister() {
         if (error.code === 'auth/email-already-in-use') {
             errors.email = "Email already in use";
         }
-        setLoading(false);
-
         return errors;
     };
 
