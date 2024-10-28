@@ -211,7 +211,7 @@ export function useRegister() {
 
         await waitForNavigation(navigate, '/confirmEmail');
 
-        setLoading(false);
+        // setLoading(false);
 
     };
 
