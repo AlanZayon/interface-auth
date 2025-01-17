@@ -18,7 +18,6 @@ export const useAuth = () => {
     setPersistence(auth, browserLocalPersistence)
       .then(() => {
         const user = auth.currentUser;
-        console.log(user);
         if (user) {
           handleFirebaseSession(user);
         } else {
@@ -42,7 +41,7 @@ export const useAuth = () => {
         verificationTokenToPersistence(fireUserId, "Firebase");
       }
     } catch (error) {
-      console.error("Error handling Firebase session:", error);
+      console.error("Error handling Firebase session:");
       await signOut(auth);
       setLoading(false);
       navigate("/");
@@ -76,7 +75,7 @@ export const useAuth = () => {
         handleNavigation(data.verified);
       }
     } catch (error) {
-      console.error("Error accessing protected resource:", error);
+      console.error("Error accessing protected resource:");
     }
   };
 
