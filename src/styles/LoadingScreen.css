@@ -1,0 +1,21 @@
+.loading-container {
+    height: 100vh;
+  }
+  
+  .loading-spinner {
+    width: 4rem;
+    height: 4rem;
+  }
+  
+  .loading-text {
+    font-size: 1.2rem;
+    color: #007bff;
+    font-weight: 500;
+    animation: fadeIn 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes fadeIn {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+  
