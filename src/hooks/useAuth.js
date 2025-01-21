@@ -18,7 +18,6 @@ export const useAuth = () => {
     setPersistence(auth, browserLocalPersistence)
       .then(() => {
         const user = auth.currentUser;
-        console.log(user);
         if (user) {
           handleFirebaseSession(user);
         } else {
