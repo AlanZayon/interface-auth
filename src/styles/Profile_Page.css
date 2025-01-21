@@ -1,6 +1,7 @@
 /* ProfilePage.css */
 
   .profile-card {
+    position: relative;
     background-color: #fff;
     padding: 2rem;
     border-radius: 10px;
@@ -106,5 +107,13 @@
   
   .btn {
     margin-bottom: 1rem;
+  }
+  
+  .gear-icon {
+    transition: transform 1s ease-in-out;
+  }
+  
+  .gear-icon.rotating {
+    transform: rotate(360deg);
   }
   

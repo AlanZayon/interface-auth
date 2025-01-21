@@ -41,10 +41,7 @@ function Home() {
                 <Col md={6} className="text-left">
                     <h1 style={{ fontSize: '3rem' }}>Stickerbush</h1>
                     <p style={{ fontSize: '1.5rem' }}>
-                        Inspirado no significado da musica Stickerbush do Donkey Kong Country 2,
-                        criei esse site para que possamos nos expressar e compartilhar com novas
-                        pessoas o que estamos sentindo enquanto escutamos esse clássico das
-                        trilhas sonoras dos games.
+                    Inspired by the meaning of the song Stickerbush from Donkey Kong Country 2, I created this website so that we can express ourselves and share with new people what we are feeling while listening to this classic game soundtrack.
                     </p>
                 </Col>
                 <Col className="d-flex justify-content-center align-items-center">

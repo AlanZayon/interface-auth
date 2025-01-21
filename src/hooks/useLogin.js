@@ -26,7 +26,7 @@ export const useLogin = (setErrorMessage) => {
             return response;
         },
         onSuccess: async (response) => {
-            const token = await response.headers.get("Authorization-token").split(" ")[1];
+            const token =  response.headers.get("Authorization-token").split(" ")[1];
             const data = await response.json()
             const userCredential = await signInWithCustomToken(auth, data.firebaseToken);
             await handleAdditionalUserInfo(userCredential);

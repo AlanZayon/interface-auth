@@ -185,10 +185,14 @@ export function useRegister() {
         const newUser = await signInWithCustomToken(auth, data.firebaseToken);
 
         const linkPromises = [];
+        let customClaims = {};
 
         if (googleProviderExists) {
             const googleCredential = GoogleAuthProvider.credential(cred.idToken);
             linkPromises.push(linkWithCredential(newUser.user, googleCredential));
+
+            customClaims = { alreadyUnlinked: true }; 
+
         }
 
         if (facebookProviderExists) {
@@ -198,11 +202,11 @@ export function useRegister() {
 
         await Promise.all(linkPromises);
 
-        await sendEmail({ email: newUser.user.email, uid: newUser.user.uid, oldEmail: data.oldUserEmail });
+        await sendEmail({ email: newUser.user.email, uid: newUser.user.uid, oldEmail: data.oldUserEmail, customClaims  });
 
         await signOut(auth);
 
-        await navigate('/confirmEmail');
+         navigate('/confirmEmail');
 
         setLoading(false);
 

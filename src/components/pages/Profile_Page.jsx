@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { auth } from "../../services/firebaseConfig";
 import { Container, Button, Row } from 'react-bootstrap';
-import { FaEdit } from 'react-icons/fa';
-import { getAuth, signOut } from 'firebase/auth';
+import { FaEdit, FaCog } from 'react-icons/fa';
+import { signOut, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
 import ChangePasswordForm from '../layout/ChangePasswordForm';
 import { useNavigate } from 'react-router-dom';
 import { useLoading } from '../context/LoadingContext';
 import CardTreatment from '../common/CardProfileTreatment';
 import ModalNewEmail from '../common/ModalNewEmail';
+import ModalSocialConnections from '../common/ModalSocialConnections';
 import '../../styles/Profile_Page.css';
 
 const ProfilePage = () => {
@@ -25,37 +27,65 @@ const ProfilePage = () => {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isRotating, setIsRotating] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
 
+  const handleIconClick = () => {
+    setIsRotating(true);
+    setTimeout(() => setIsRotating(false), 400); // Reset rotation after 1 second
+    setShowSettingsModal(true); // Open the modal
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Enviar solicitação para o backend para invalidar o token
-        const token = localStorage.getItem("token");
-        const response = await fetch(`${API_BASE_URL}/admin/user`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token,
-            "X-Auth-Type": "JWT" // Enviar o token no cabeçalho da solicitação
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error("Erro: " + response.statusText);
+    setLoading(true);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // User is signed in, get the token and fetch data
+        const token = await user.getIdToken();
+        fetchUserData(token, "Firebase");
+      } else {
+        setLoading(true);
+        // No user is signed in, try to use local token
+        const localToken = localStorage.getItem("token");
+        if (localToken) {
+          fetchUserData(localToken, "JWT");
         }
-
-        const data = await response.json();
-        setUsername(data.username);
-        setEmail(data.email);
-        setProfileImage(data.profileImage);
-      } catch (error) {
-        console.error("Erro ao buscar dados:", error);
       }
-    };
+    });
 
-    fetchData();
+    return () => unsubscribe(); // Cleanup on unmount
   }, []);
+
+  const fetchUserData = async (token, authType) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/admin/user`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token,
+          "X-Auth-Type": authType
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro: " + response.statusText);
+      }
+
+      const data = await response.json();
+      const user = data.user;
+      const firebaseToken = data.firebaseToken;
+      setUsername(user.username);
+      setEmail(user.email);
+      setProfileImage(user.profileImage);
+      if (authType === "JWT") {
+        await signInWithCustomToken(auth, firebaseToken);
+      } else if (authType === "Firebase") {
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar dados:", error);
+    }
+  };
 
   useEffect(() => {
     if (isEditing && inputRef.current) {
@@ -160,9 +190,6 @@ const ProfilePage = () => {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      const auth = getAuth();
-      // Realizar logout usando o Firebase
-      await signOut(auth);
 
       // Enviar solicitação para o backend para invalidar o token
       const token = localStorage.getItem("token");
@@ -183,6 +210,9 @@ const ProfilePage = () => {
       // Remover o token do armazenamento local após o logout
       localStorage.removeItem("token");
 
+      // Realizar logout usando o Firebase
+      await signOut(auth);
+
       // Redirecionar para a página inicial após o logout
       navigate("/")
     } catch (error) {
@@ -194,6 +224,8 @@ const ProfilePage = () => {
 
   return (
     <Container className="d-flex justify-content-center align-items-center">
+
+
 
       <CardTreatment
         show={show}
@@ -209,8 +241,20 @@ const ProfilePage = () => {
         setIsSuccess={setIsSuccess}
         setEmail={setEmail}
       />
+
+      <ModalSocialConnections 
+      show={showSettingsModal} 
+      handleClose={() => setShowSettingsModal(false)} 
+      />
+
       <Row className="profile-card p-3 rounded shadow" style={{ backgroundColor: '#fff', maxWidth: '400px' }}>
+
         <div className="text-center mb-3">
+          <FaCog
+            className={`gear-icon ${isRotating ? 'rotating' : ''}`}
+            onClick={handleIconClick}
+            style={{ position: 'absolute', top: '10px', right: '10px', cursor: 'pointer', fontSize: '24px' }}
+          />
           <div
             className="profile-picture rounded-circle mb-3"
             style={{

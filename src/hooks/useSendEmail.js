@@ -4,13 +4,13 @@ import { useMutation } from "@tanstack/react-query";
 export function useSendEmail() {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-  const sendEmailUser = async ({ email, uid, oldEmail }) => {
+  const sendEmailUser = async ({ email, uid, oldEmail, customClaims }) => {
     const response = await fetch(`${API_BASE_URL}/user/SendEmailToVerify`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=UTF-8",
       },
-      body: JSON.stringify({ email, uid, oldEmail }), // `oldEmail` pode ser null
+      body: JSON.stringify({ email, uid, oldEmail, customClaims }), // `oldEmail` pode ser null
     });
 
     if (!response.ok) {
