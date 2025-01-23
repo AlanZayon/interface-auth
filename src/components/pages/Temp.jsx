@@ -1,11 +1,27 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { auth } from "../../services/firebaseConfig";
+import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { Col, Row, Container } from 'react-bootstrap';
 import '../../styles/Home_Page.css';
 
 
 function confirmEmail() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                const localToken = localStorage.getItem("token");
+                if (localToken) {
+                    navigate("/");
+                }
+            }
+        });
+
+        return () => unsubscribe(); // Cleanup on unmount
+    }, []);
 
     return (
         <Container>

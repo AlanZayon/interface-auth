@@ -22,7 +22,7 @@ function Home() {
     const loginUser = useLogin(setErrorMessage);
 
     const handleLogin = (e) => {
-        e.preventDefault(); // Adiciona essa linha para prevenir o reload
+        e.preventDefault(); 
         setErrorMessage(null);
         loginUser({ email, password });
     };

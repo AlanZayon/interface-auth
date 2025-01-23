@@ -6,7 +6,7 @@ import { useLoading } from '../components/context/LoadingContext';
 
 export const useLogin = (setErrorMessage) => {
     const navigate = useNavigate();
-    const { setLoading } = useLoading();  
+    const { setLoading, setRedirect2AF, setRedirect } = useLoading();  
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     const { mutate: loginUser } = useMutation({
@@ -30,10 +30,15 @@ export const useLogin = (setErrorMessage) => {
             const data = await response.json()
             const userCredential = await signInWithCustomToken(auth, data.firebaseToken);
             await handleAdditionalUserInfo(userCredential);
-            if (data.verifyStatus === true) {
+            if (data.verifyStatus === true && !data.enable2FA) {
                 localStorage.setItem("token", token);
+                setRedirect(true);
                 navigate("/profile");
-            } else {
+            }else if(data.enable2FA === true){
+                setRedirect2AF(true);
+                navigate("/2fa");
+            }else {
+                setRedirect(true);
                 navigate("/confirmEmail");
             }
         },

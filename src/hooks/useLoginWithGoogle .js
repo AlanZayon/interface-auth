@@ -15,7 +15,7 @@ import {
 const useLoginWithGoogle = () => {
 
     const navigate = useNavigate();
-    const { setLoading } = useLoading();
+    const { setLoading, setRedirect2AF, setRedirect } = useLoading();
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     return useMutation({
@@ -57,6 +57,7 @@ const useLoginWithGoogle = () => {
                 });
 
                 await signOut(auth);
+                setRedirect(true);
                 navigate("/loginProvider");
             }
 
@@ -72,7 +73,7 @@ const useLoginWithGoogle = () => {
             if (isNewUser) {
                 redirectToRegistration(user, credential, navigate);
             } else if (alreadyUnlinked) {
-                await handleExistingUser(user, navigate, API_BASE_URL);
+                await handleExistingUser(user, navigate, API_BASE_URL, setRedirect, setRedirect2AF);
             }
         },
         onError: (error) => {
@@ -110,7 +111,7 @@ const redirectToRegistration = (user, credential, navigate) => {
     navigate(`/register?name=${nomeEncoded}&email=${emailEncoded}`, { state: { show: true } });
 };
 
-const handleExistingUser = async (user, navigate, API_BASE_URL) => {
+const handleExistingUser = async (user, navigate, API_BASE_URL, setRedirect, setRedirect2AF) => {
     const userId = await user.getIdToken(true);
     if (userId) {
         const response = await fetch(`${API_BASE_URL}/user/check-firebase-user`, {
@@ -121,7 +122,12 @@ const handleExistingUser = async (user, navigate, API_BASE_URL) => {
             },
         });
         const data = await response.json();
-        if (data.userExists && data.verifyStatus === true) {
+        console.log(data);
+        if (data.userExists && data.verifyStatus === true && data.enable2FA) {
+            setRedirect2AF(true);
+            navigate("/2fa");
+        }else if (data.userExists && data.verifyStatus === true && !data.enable2FA) {
+            setRedirect(true);
             navigate("/profile");
         } else {
             navigate("/confirmEmail");
@@ -129,7 +135,7 @@ const handleExistingUser = async (user, navigate, API_BASE_URL) => {
     }
 };
 
-const useLinkGoogleAccount = (handleMessage) => {
+const useLinkGoogleAccount = ({handleMessage, handleMessageType}) => {
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const { setLoading } = useLoading();
 
@@ -164,9 +170,6 @@ const useLinkGoogleAccount = (handleMessage) => {
 
             // Check if the Google account is already linked
             const linkedAccounts = user.providerData.map(provider => provider.providerId);
-            console.log("linked: ", linkedAccounts);
-            console.log("result: ", credential);
-            console.log("user: ", user);
             if (linkedAccounts.includes(GoogleAuthProvider.PROVIDER_ID) && user.uid !== resultUser.uid && !resultUserUidIsMongoObjectId) {
                 // Unlink the existing Google account
                 await unlink(user, GoogleAuthProvider.PROVIDER_ID);
@@ -185,7 +188,6 @@ const useLinkGoogleAccount = (handleMessage) => {
             return { user };
         },
         onSuccess: async ({ user }) => {
-            console.log("Successfully linked Google account:", user);
 
             await fetch(`${API_BASE_URL}/user/update-profile`, {
                 method: "POST",
@@ -198,21 +200,21 @@ const useLinkGoogleAccount = (handleMessage) => {
                 })
             });
             handleMessage("Successfully linked Google account.");
+            handleMessageType("success");
             setLoading(false);
 
-
-            // Handle successful linking (e.g., show success message)
         },
         onError: async (error) => {
-            console.log(error);
             await signOut(auth);
+            console.log(error);
 
-            if (error.code === 'auth/credential-already-in-use') {
-                console.error("The account is already linked to another user.");
+            if (error.code === 'auth/credential-already-in-use' || error.code === 'auth/email-already-in-use' || error.code === 'auth/account-exists-with-different-credential' || error.code === 'auth/provider-already-linked') {
                 handleMessage("The account is already linked to another user.");
+                handleMessageType("error");
+                setLoading(false);
                 // Handle the case where the account is linked to another user
             } else {
-                console.error("Error linking Google account:", error);
+                console.error("Error linking Google account:");
                 // Handle other errors (e.g., show error message)
             }
         }

@@ -1,13 +1,17 @@
-import React,{useState}from "react";
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import { FaGoogle} from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa';
 import { useLoginWithGoogle, useLinkGoogleAccount } from "../../hooks/useLoginWithGoogle ";
 // import useLoginWithFacebook from "../../hooks/useLoginWithFacebook";
 
 const SocialLoginButtons = ({ linkConnect }) => {
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
   const { mutate: loginWithGoogle } = useLoginWithGoogle();
-  const { mutate: linkGoogleAccount } = useLinkGoogleAccount(setMessage);
+  const { mutate: linkGoogleAccount } = useLinkGoogleAccount({
+    handleMessage: setMessage,
+    handleMessageType: setMessageType
+  });
   // const { mutate: loginWithFacebook } = useLoginWithFacebook();
 
   return (
@@ -19,7 +23,9 @@ const SocialLoginButtons = ({ linkConnect }) => {
       >
         <FaGoogle className="mx-2" /> Connect with Google
       </Button>
-      {message && <p>{message}</p>}
+      <p style={{ color: messageType === "error" ? "red" : "green" }}>
+        {message}
+      </p>
       {/* <Button variant="primary" className="d-flex align-items-center" onClick={() => loginWithFacebook()}>
         <FaFacebook className="mx-2" /> Connect with Facebook
       </Button> */}

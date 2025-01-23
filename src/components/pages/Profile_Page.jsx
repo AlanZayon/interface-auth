@@ -14,7 +14,7 @@ import '../../styles/Profile_Page.css';
 const ProfilePage = () => {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
-  const { setLoading } = useLoading();
+  const { setLoading, setRedirect2AF, setRedirect } = useLoading();
   const [profileImage, setProfileImage] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [username, setUsername] = useState("");
@@ -49,6 +49,9 @@ const ProfilePage = () => {
         const localToken = localStorage.getItem("token");
         if (localToken) {
           fetchUserData(localToken, "JWT");
+        } else {
+          setLoading(false);
+          navigate("/");
         }
       }
     });
@@ -70,6 +73,7 @@ const ProfilePage = () => {
       if (!response.ok) {
         throw new Error("Erro: " + response.statusText);
       }
+
 
       const data = await response.json();
       const user = data.user;
@@ -189,16 +193,38 @@ const ProfilePage = () => {
 
   const handleLogout = async () => {
     setLoading(true);
-    try {
 
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // User is signed in, get the token and fetch data
+        const token = await user.getIdToken();
+        logout(token, "Firebase");
+      } else {
+        setLoading(true);
+        // No user is signed in, try to use local token
+        const localToken = localStorage.getItem("token");
+        if (localToken) {
+          logout(localToken, "JWT");
+        } else {
+          setLoading(false);
+          navigate("/");
+        }
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup on unmount
+
+  }
+
+  const logout = async (token, authType) => {
+    try {
       // Enviar solicitação para o backend para invalidar o token
-      const token = localStorage.getItem("token");
       const response = await fetch(`${API_BASE_URL}/user/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer " + token,
-          "X-Auth-Type": "JWT" // Enviar o token no cabeçalho da solicitação
+          "X-Auth-Type": authType// Enviar o token no cabeçalho da solicitação
         },
         body: JSON.stringify({ token })
       });
@@ -213,6 +239,9 @@ const ProfilePage = () => {
       // Realizar logout usando o Firebase
       await signOut(auth);
 
+      setRedirect(false);
+      setRedirect2AF(false);
+
       // Redirecionar para a página inicial após o logout
       navigate("/")
     } catch (error) {
@@ -220,7 +249,10 @@ const ProfilePage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }
+
+
+
 
   return (
     <Container className="d-flex justify-content-center align-items-center">
@@ -242,9 +274,9 @@ const ProfilePage = () => {
         setEmail={setEmail}
       />
 
-      <ModalSocialConnections 
-      show={showSettingsModal} 
-      handleClose={() => setShowSettingsModal(false)} 
+      <ModalSocialConnections
+        show={showSettingsModal}
+        handleClose={() => setShowSettingsModal(false)}
       />
 
       <Row className="profile-card p-3 rounded shadow" style={{ backgroundColor: '#fff', maxWidth: '400px' }}>
@@ -328,5 +360,6 @@ const ProfilePage = () => {
     </Container>
   );
 };
+
 
 export default ProfilePage;

@@ -1,18 +1,20 @@
 import { useEffect } from "react";
 import { setPersistence, browserLocalPersistence, signOut } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useLoading } from '../components/context/LoadingContext';
 import { auth } from "../services/firebaseConfig";
 
+
 export const useAuth = () => {
   const navigate = useNavigate();
-  const { setLoading } = useLoading();
+  const location = useLocation();
+  const { setLoading, setRedirect, setRedirect2AF } = useLoading();
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     setLoading(true);
     setAuthPersistence();
-  }, [navigate]);
+  }, []);
 
   const setAuthPersistence = () => {
     setPersistence(auth, browserLocalPersistence)
@@ -44,6 +46,8 @@ export const useAuth = () => {
       console.error("Error handling Firebase session:", error);
       await signOut(auth);
       setLoading(false);
+      setRedirect2AF(false);
+      setRedirect(false);
       navigate("/");
     }
   };
@@ -54,6 +58,8 @@ export const useAuth = () => {
       verificationTokenToPersistence(token, "JWT");
     } else {
       setLoading(false);
+      setRedirect2AF(false);
+      setRedirect(false);
       navigate("/");
     }
   };
@@ -72,20 +78,28 @@ export const useAuth = () => {
         handleLogout(authType);
       } else {
         const data = await response.json();
-        handleNavigation(data.verified);
+        handleNavigation(data.verified, data.isValid, data.enabled);
       }
     } catch (error) {
       console.error("Error accessing protected resource:", error);
     }
   };
 
-  const handleNavigation = (isVerified) => {
+  const handleNavigation = (isVerified,isValid, enabled) => {
     if (!isVerified) {
       setLoading(false);
+      setRedirect(true);
       navigate("/confirmEmail");
-    } else {
+    } else if(enabled && isVerified && isValid) {
       setLoading(false); 
+      setRedirect(true);
       navigate("/profile");
+    }else if(!enabled && isVerified){
+      setLoading(false);
+      setRedirect(true);
+      navigate("/profile");
+    }else {
+      setLoading(false);
     }
   };
 
@@ -95,6 +109,8 @@ export const useAuth = () => {
       await signOut(auth);
     }
     setLoading(false); 
+    setRedirect2AF(false);
+    setRedirect(false);
     navigate("/");
   };
 };
