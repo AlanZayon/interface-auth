@@ -122,7 +122,6 @@ const handleExistingUser = async (user, navigate, API_BASE_URL, setRedirect, set
             },
         });
         const data = await response.json();
-        console.log(data);
         if (data.userExists && data.verifyStatus === true && data.enable2FA) {
             setRedirect2AF(true);
             navigate("/2fa");
@@ -206,7 +205,6 @@ const useLinkGoogleAccount = ({handleMessage, handleMessageType}) => {
         },
         onError: async (error) => {
             await signOut(auth);
-            console.log(error);
 
             if (error.code === 'auth/credential-already-in-use' || error.code === 'auth/email-already-in-use' || error.code === 'auth/account-exists-with-different-credential' || error.code === 'auth/provider-already-linked') {
                 handleMessage("The account is already linked to another user.");

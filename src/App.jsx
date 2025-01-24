@@ -27,9 +27,6 @@ function PrivateRoute({ element }) {
 function PrivateRoute2FA({ element }) {
   const { redirect2AF } = useLoading();
 
-  useEffect(() => {
-    console.log('redirect2Af', redirect2AF);
-  }, [redirect2AF]);
 
   // Verifica se o 2FA está habilitado e permite o acesso
   return redirect2AF ? element : <Navigate to="/" />;

@@ -29,6 +29,7 @@ const ProfilePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [isRotating, setIsRotating] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [enabled2FA, setEnabled2FA] = useState(null);
 
   const handleIconClick = () => {
     setIsRotating(true);
@@ -81,6 +82,7 @@ const ProfilePage = () => {
       setUsername(user.username);
       setEmail(user.email);
       setProfileImage(user.profileImage);
+      setEnabled2FA(user.enabled);
       if (authType === "JWT") {
         await signInWithCustomToken(auth, firebaseToken);
       } else if (authType === "Firebase") {
@@ -276,6 +278,7 @@ const ProfilePage = () => {
 
       <ModalSocialConnections
         show={showSettingsModal}
+        enable2FAAuth={enabled2FA}
         handleClose={() => setShowSettingsModal(false)}
       />
 

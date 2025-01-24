@@ -6,7 +6,7 @@ import { useLoading } from '../context/LoadingContext';
 
 import SocialLoginButtons from '../layout/SocialLoginButtons ';
 
-function SettingsModal({ show, handleClose }) {
+function SettingsModal({ show, handleClose, enable2FAAuth }) {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const { setLoading } = useLoading();
   const [is2FAEnabled, setIs2FAEnabled] = useState(null);
@@ -17,7 +17,12 @@ function SettingsModal({ show, handleClose }) {
   const [qrCode, setQrCode] = useState('');
 
   useEffect(() => {
-    // Verifica se is2FAEnabled é explicitamente true ou false
+    setIs2FAEnabled(enable2FAAuth);    
+  }, [enable2FAAuth]);
+
+  useEffect(() => {
+    // Verifica se is
+    // 2FAEnabled é explicitamente true ou false
     if (typeof is2FAEnabled !== "boolean") {
       return;
     }
