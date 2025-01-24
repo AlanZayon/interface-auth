@@ -25,4 +25,4 @@ dist-ssr
 
 
 .env
-services/firebaseConfig.js
+src/services/firebaseConfig.js
