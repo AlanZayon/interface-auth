@@ -21,7 +21,6 @@ function SettingsModal({ show, handleClose, enable2FAAuth }) {
   }, [enable2FAAuth]);
 
   useEffect(() => {
-    // Verifica se is
     // 2FAEnabled é explicitamente true ou false
     if (typeof is2FAEnabled !== "boolean") {
       return;
