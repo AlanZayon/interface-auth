@@ -1,85 +1,85 @@
-# Documentação do Frontend - Autenticação com Login Social
+# Frontend Documentation - Social Login Authentication
 
-## Sumário
+## Table of Contents
 
-1. [Introdução](#1-introdução)
-2. [Tecnologias Utilizadas](#2-tecnologias-utilizadas)
-3. [Configuração](#3-configuração)
-4. [Funcionalidades](#4-funcionalidades)
+1. [Introduction](#1-introduction)
+2. [Technologies Used](#2-technologies-used)
+3. [Setup](#3-setup)
+4. [Features](#4-features)
    - [Login](#41-login)
-   - [Cadastro](#42-cadastro)
-   - [Login com Google](#43-login-com-google)
-   - [Login com Facebook](#44-login-com-facebook)
-5. [Comunicação com a API](#5-comunicação-com-a-api)
-6. [Tratamento de Erros](#6-tratamento-de-erros)
-7. [Fluxo de Usuário](#7-fluxo-de-usuário)
-8. [Notas Finais](#8-notas-finais)
+   - [Registration](#42-registration)
+   - [Login with Google](#43-login-with-google)
+  <!--  - [Login com Facebook](#44-login-com-facebook)-->
+5. [API Communication](#5-api-communication)
+6. [Error Handling](#6-error-handling)
+7. [User Flow](#7-user-flow)
+8. [Final Notes](#8-final-notes)
 
 ---
 
-## 1. Introdução
-Este frontend foi desenvolvido para um sistema de autenticação que permite login, cadastro de usuários e login social usando Google e Facebook. Ele se comunica com uma API REST para autenticar e registrar usuários, além de validar credenciais.
+## 1. Introduction
+This frontend was developed for an authentication system that allows login, user registration, and social login using Google and Facebook. It communicates with a REST API to authenticate and register users, as well as validate credentials.
 
-### URL do Site
+### Website URL
 
-A aplicação está disponível no seguinte endereço:
+The application is available at the following address:
 
 https://site-kong.netlify.app/
 
-### Documentação da API
+### API Documentation
 
-A documentação está disponível no seguinte endereço:
+The documentation is available at the following address:
 
 https://github.com/AlanZayon/api-auth
 
-## 2. Tecnologias Utilizadas
+## 2. Technologies Used
 - **React**
 - **Firebase Authentication**
 - **TanStack Query**
 - **React Router**
 - **React Bootstrap**
 
-## 3. Configuração
+## 3. Setup
 
-Para rodar o projeto localmente, siga os passos abaixo:
+To run the project locally, follow these steps:
 
-3.1. **Clone o repositório**:
+3.1. **Clone the repository:**:
    ```bash
    git clone https://github.com/AlanZayon/interface-auth.git
    ```
-3.2. **Instale as dependências**:
+3.2. **Install dependencies:**:
    ```bash
    npm install
    ```
-3.3. **Crie um arquivo .env com as variáveis de ambiente**:
+3.3. **Create a .env file with the environment variables:**:
    ```env
    VITE_API_BASE_URL=your_auth_domain
    ```
-3.4. **Execute o projeto**:
+3.4. **Run the project:**:
    ```bash
    npm run dev
    ```
-O projeto estará disponível em http://localhost:5173
+The project will be available at http://localhost:5173
 
 
-## 4. Funcionalidades
+## 4. Features
 
 ### 4.1 Login
 ![LOGIN](https://i.imgur.com/lCKa79t.gif)
 
-### 4.2 Cadastro
+### 4.2 Registration
 ![CADASTRO](https://i.imgur.com/hvZjU4Z.gif)
 
-### 4.3 Login com Google
+### 4.3 Login with Google
 ![LOGIN GOOGLE](https://i.imgur.com/J3bXMOU.gif)
-
+<!-- 
 ### 4.4 Login com Facebook
 ![LOGIN FACEBOOK](https://i.imgur.com/QnuJpZj.gif)
+-->
+## 5. API Communication
+Requests to the backend follow a pattern of authentication with JWT tokens or Firebase tokens, where the token is stored in localStorage or sessionStorage and sent or received with each request using the Authorization header: Bearer <token>.
 
-## 5. Comunicação com a API
-As requisições ao backend seguem um padrão de autenticação com tokens JWT ou Firebase tokens, onde o token é armazenado no localStorage ou sessionStorage e enviado ou recebido em cada requisição com o cabeçalho Authorization: Bearer <token>.
-
-### Exemplo de chamada com Fetch:
+### Example of a Fetch request:
 
 ```js
 const response = await fetch(`${API_BASE_URL}/user/login`, {
@@ -93,17 +93,17 @@ const response = await fetch(`${API_BASE_URL}/user/login`, {
 const token = await response.headers.get("Authorization-token").split(" ")[1];
 ```
 
-## 6. Tratamento de Erros.
-### Erros de validação login: e-mail ou senha inválidos.
+## 6. Error Handling
+### Login Validation Errors: Invalid email or password..
 ![erro de validação login](https://i.imgur.com/nLROfyP.gif)
-### Erros de validação: cadastro:username at least 5 characters, Emails do not match, Password is too weak, You must be at least 18 years old.
+### Registration Validation Errors: Username must be at least 5 characters, Emails do not match, Password is too weak, You must be at least 18 years old..
 ![erro de validação cadastro](https://i.imgur.com/3eJcbsE.gif)
 
-## 7. Fluxo de Usuário
-- **Cadastro**: o usuário se registra inserindo nome, email, senha e data de nascimento. Após a confirmação, o sistema redireciona para a página de confirmação de email.
-- **Login**: o usuário faz login com email/senha ou através de Google/Facebook. O token JWT ou o Firebase Token é salvo e utilizado em todas as requisições futuras para validar a sessão.
-- **Login Social**: o Firebase autentica o usuário via Google/Facebook e retorna um token que é enviado ao backend para associar ou criar a conta.
-- **Persistência de Sessão**: o token é armazenado no localStorage/sessionStorage para manter o usuário autenticado entre sessões(futuramente será alterado para o uso de cookies).
-## 8. Notas Finais
-Este frontend foi projetado para ser escalável e modular, facilitando a manutenção e possíveis expansões de funcionalidades como redefinição de senha, autenticação de dois fatores, etc. O projeto ainda está em construção e precisa ainda de muitas melhorias e correções.
+## 7. User Flow
+- **Registration**: The user registers by entering name, email, password, and date of birth. After confirmation, the system redirects to the email confirmation page.
+- **Login**:The user logs in with email/password or via Google/Facebook. The JWT token or Firebase Token is saved and used in all future requests to validate the session.
+- **Social Login**: Firebase authenticates the user via Google and returns a token that is sent to the backend to associate or create the account.
+- **Session Persistence**: The token is stored in localStorage/sessionStorage to keep the user authenticated between sessions (this will eventually be changed to using cookies).
+## 8. Final Notes
+This frontend was designed to be scalable and modular, facilitating maintenance and potential feature expansions such as password reset, two-factor authentication, etc. The project is still under construction and requires many improvements and fixes.
 
