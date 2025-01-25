@@ -9,7 +9,7 @@
    - [Login](#41-login)
    - [Cadastro](#42-cadastro)
    - [Login com Google](#43-login-com-google)
-   - [Login com Facebook](#44-login-com-facebook)
+  <!--  - [Login com Facebook](#44-login-com-facebook)-->
 5. [Comunicação com a API](#5-comunicação-com-a-api)
 6. [Tratamento de Erros](#6-tratamento-de-erros)
 7. [Fluxo de Usuário](#7-fluxo-de-usuário)
@@ -72,10 +72,10 @@ O projeto estará disponível em http://localhost:5173
 
 ### 4.3 Login com Google
 ![LOGIN GOOGLE](https://i.imgur.com/J3bXMOU.gif)
-
+<!-- 
 ### 4.4 Login com Facebook
 ![LOGIN FACEBOOK](https://i.imgur.com/QnuJpZj.gif)
-
+-->
 ## 5. Comunicação com a API
 As requisições ao backend seguem um padrão de autenticação com tokens JWT ou Firebase tokens, onde o token é armazenado no localStorage ou sessionStorage e enviado ou recebido em cada requisição com o cabeçalho Authorization: Bearer <token>.
 
