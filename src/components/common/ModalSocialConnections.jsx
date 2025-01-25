@@ -10,6 +10,7 @@ function SettingsModal({ show, handleClose, enable2FAAuth }) {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const { setLoading } = useLoading();
   const [is2FAEnabled, setIs2FAEnabled] = useState(null);
+  const [is2FAEnabledIcon, setIs2FAEnabledIcon] = useState(null);
   const [verificationCode, setVerificationCode] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [isCodeVerified, setIsCodeVerified] = useState(false);
@@ -17,7 +18,7 @@ function SettingsModal({ show, handleClose, enable2FAAuth }) {
   const [qrCode, setQrCode] = useState('');
 
   useEffect(() => {
-    setIs2FAEnabled(enable2FAAuth);    
+    setIs2FAEnabledIcon(enable2FAAuth);
   }, [enable2FAAuth]);
 
   useEffect(() => {
@@ -84,6 +85,7 @@ function SettingsModal({ show, handleClose, enable2FAAuth }) {
 
   const handle2FAToggle = () => {
     setIs2FAEnabled(prevState => !prevState);
+    setIs2FAEnabledIcon(prevState => !prevState);
   };
 
   const handleverifyCode = () => {
@@ -192,35 +194,37 @@ function SettingsModal({ show, handleClose, enable2FAAuth }) {
             type="switch"
             id="enable-2fa"
             label="Enable 2FA"
-            checked={is2FAEnabled || false}
+            checked={is2FAEnabledIcon || false}
             onChange={handle2FAToggle}
           />
           {is2FAEnabled && (
             <div className="mt-3">
-              {!isCodeSent ? (
-                <p>Follow the instructions to enable Two-Factor Authentication.</p>
+              {isCodeVerified ? (
+                <Alert variant="success" className="mt-2">
+                  Two-Factor Authentication has been successfully enabled!
+                </Alert>
               ) : (
-                <>
-                  <p>Scan the QR Code below with your authentication app (e.g., Google Authenticator):</p>
-                  <img src={qrCode} alt="QR Code for 2FA" />
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter the code from your app"
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value)}
-                    className="mt-2"
-                  />
-                  <Button variant="primary" onClick={handleverifyCode} className="mt-2">
-                    Verify Code
-                  </Button>
-                  {error && <Alert variant="danger" className="mt-2">{error}</Alert>}
-                  {isCodeVerified && (
-                    <Alert variant="success" className="mt-2">
-                      Two-Factor Authentication has been successfully enabled!
-                    </Alert>
-                  )}
-                </>
+                !isCodeSent ? (
+                  <p>Follow the instructions to enable Two-Factor Authentication.</p>
+                ) : (
+                  <>
+                    <p>Scan the QR Code below with your authentication app (e.g., Google Authenticator):</p>
+                    <img src={qrCode} alt="QR Code for 2FA" />
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter the code from your app"
+                      value={verificationCode}
+                      onChange={(e) => setVerificationCode(e.target.value)}
+                      className="mt-2"
+                    />
+                    <Button variant="primary" onClick={handleverifyCode} className="mt-2">
+                      Verify Code
+                    </Button>
+                    {error && <Alert variant="danger" className="mt-2">{error}</Alert>}
+                  </>
+                )
               )}
+
             </div>
           )}
         </div>
