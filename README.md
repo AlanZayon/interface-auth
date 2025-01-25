@@ -76,6 +76,9 @@ The project will be available at http://localhost:5173
 ### 4.4 Login com Facebook
 ![LOGIN FACEBOOK](https://i.imgur.com/QnuJpZj.gif)
 -->
+### 4.4 Forgot Password
+The Forgot Password flow allows users to reset their password if they've forgotten it. The process involves entering the email associated with the account, receiving a password reset email with a link, and then entering a new password after clicking the link.
+
 ## 5. API Communication
 Requests to the backend follow a pattern of authentication with JWT tokens or Firebase tokens, where the token is stored in localStorage or sessionStorage and sent or received with each request using the Authorization header: Bearer <token>.
 
