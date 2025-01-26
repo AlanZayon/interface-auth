@@ -9,6 +9,8 @@
    - [Login](#41-login)
    - [Registration](#42-registration)
    - [Login with Google](#43-login-with-google)
+   - [Forgot Password](#44-forgot-password).
+   - [Two-Factor Authentication (2FA)](#45-two-factor-authentication)
   <!--  - [Login com Facebook](#44-login-com-facebook)-->
 5. [API Communication](#5-api-communication)
 6. [Error Handling](#6-error-handling)
@@ -72,12 +74,33 @@ The project will be available at http://localhost:5173
 
 ### 4.3 Login with Google
 ![LOGIN GOOGLE](https://i.imgur.com/J3bXMOU.gif)
+
+#### 4.3.1 Login with Google (Advanced Flow)
+The Login with Google flow is designed to check if the email used in the Google account is already registered in the system. If it is, the user will be redirected to the login page, and after logging in, the existing account will be automatically linked to the Google account.
+![ADVANCED-FLOW](https://i.imgur.com/EyveR7e.gif)
+
+#### 4.3.2 Login with Google (Registration for Non-Existing Accounts)
+This flow handles cases where a user logs in with a Google account that does not already exist in the system. The user is redirected to the registration page with pre-filled information (such as name and email). They only need to complete the missing fields (password and date of birth). After registration, the system automatically links the new account with the Google account.
+![REGISTRATIO FOR NON-EXISTING ACCOUNTS](https://i.imgur.com/6xEmfXr.gif)
 <!-- 
 ### 4.4 Login com Facebook
 ![LOGIN FACEBOOK](https://i.imgur.com/QnuJpZj.gif)
 -->
 ### 4.4 Forgot Password
 The Forgot Password flow allows users to reset their password if they've forgotten it. The process involves entering the email associated with the account, receiving a password reset email with a link, and then entering a new password after clicking the link.
+
+#### 4.4.1 Send Email
+![SEND-EMAIL](https://i.imgur.com/SQ70P81.gif)
+
+#### 4.4.2 Link to Change Password
+![CHANGE-PASSWORD](https://i.imgur.com/bhLwFkP.gif)
+
+### 4.5 Two-Factor Authentication
+- Display QR Code for 2FA setup
+- Allow users to scan the QR Code with an authenticator app (like Google Authenticator, Authy)
+- Verify 2FA Code during setup
+- Option to enable/disable 2FA
+![2FA](https://i.imgur.com/Cc2Qzat.gif)
 
 ## 5. API Communication
 Requests to the backend follow a pattern of authentication with JWT tokens or Firebase tokens, where the token is stored in localStorage or sessionStorage and sent or received with each request using the Authorization header: Bearer <token>.
