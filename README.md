@@ -136,7 +136,9 @@ const token = await response.headers.get("Authorization-token").split(" ")[1];
 To set up and run the project, you need to configure the required environment variables. These variables are essential for connecting to your backend API and Firebase services.
 
 -In the root directory of your project, create a file named .env
+
 -Replace the placeholder values (<your_*_here>) with your own Firebase and backend configuration details
+
    ```bash
    VITE_API_BASE_URL="<your_backend_api_url_here>"
 VITE_APP_FIREBASE_API_KEY="<your_firebase_api_key_here>"
