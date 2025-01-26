@@ -15,7 +15,8 @@
 5. [API Communication](#5-api-communication)
 6. [Error Handling](#6-error-handling)
 7. [User Flow](#7-user-flow)
-8. [Final Notes](#8-final-notes)
+8. [Environment Variables Configuration](#8-environment-variables-configuration)
+9. [Final Notes](#9-final-notes)
 
 ---
 
@@ -130,6 +131,22 @@ const token = await response.headers.get("Authorization-token").split(" ")[1];
 - **Login**:The user logs in with email/password or via Google/Facebook. The JWT token or Firebase Token is saved and used in all future requests to validate the session.
 - **Social Login**: Firebase authenticates the user via Google and returns a token that is sent to the backend to associate or create the account.
 - **Session Persistence**: The token is stored in localStorage/sessionStorage to keep the user authenticated between sessions (this will eventually be changed to using cookies).
-## 8. Final Notes
+
+## 8. Environment Variables Configuration
+To set up and run the project, you need to configure the required environment variables. These variables are essential for connecting to your backend API and Firebase services.
+
+-In the root directory of your project, create a file named .env
+-Replace the placeholder values (<your_*_here>) with your own Firebase and backend configuration details
+   ```bash
+   VITE_API_BASE_URL="<your_backend_api_url_here>"
+VITE_APP_FIREBASE_API_KEY="<your_firebase_api_key_here>"
+VITE_APP_FIREBASE_AUTH_DOMAIN="<your_firebase_auth_domain_here>"
+VITE_APP_FIREBASE_PROJECT_ID="<your_firebase_project_id_here>"
+VITE_APP_FIREBASE_STORAGE_BUCKET="<your_firebase_storage_bucket_here>"
+VITE_APP_FIREBASE_MESSAGING_SENDER_ID="<your_firebase_messaging_sender_id_here>"
+VITE_APP_FIREBASE_APP_ID="<your_firebase_app_id_here>"
+   ```
+
+## 9. Final Notes
 This frontend was designed to be scalable and modular, facilitating maintenance and potential feature expansions such as password reset, two-factor authentication, etc. The project is still under construction and requires many improvements and fixes.
 
